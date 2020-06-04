@@ -1,6 +1,6 @@
 name: doh_client
 description: This implementation allows you to send requests to DNS-over-HTTPS services.
-version: 0.1.1
+version: 0.1.2
 author: Skotnikov Sergei <skotnikov@europe.com>
 homepage: https://github.com/bronjham-code/doh_client
 
