@@ -3,8 +3,9 @@ import 'dart:io';
 
 import '../doh_client.dart';
 
-
+/// DNS-over-HTTPS class
 class DoH {
+  // interface attributes
   final Uri provider;
 
   DoH(this.provider);
@@ -12,26 +13,36 @@ class DoH {
   Future<DoHResponse> lookup(String domain, RecordType type,
       {bool dnssec, Duration timeout}) async {
     try {
+      // Init HttpClient
       var client = HttpClient();
+      // Set HttpClient timeout
       client.connectionTimeout = timeout;
+      // Init request query parameters and send request
       var request = await client.getUrl(provider.replace(queryParameters: {
         'name': domain,
         'type': type.toString().replaceFirst('RecordType.', ''),
         'dnssec': dnssec != null && dnssec ? '1' : '0'
       }));
+      // Set request http header (need for 'cloudflare' provider)
       request.headers.add('Accept', 'application/dns-json');
+      // Close & retrive response
       var response = await request.close();
+
       if (response != null && response.statusCode != null) {
+        // Convert response to <String>
         var json =
             await response.cast<List<int>>().transform(Utf8Decoder()).join();
         if (json != null && json.isNotEmpty) {
+          // Init <Map> for jsonDecode
           Map<String, dynamic> data;
           try {
+            // Decode response <String> to <Map>
             data = jsonDecode(json);
           } catch (e) {
             data = null;
           }
           if (data != null && data.isNotEmpty) {
+            // Return from status&data
             return DoHResponse.fromMap(response.statusCode, data);
           }
           return DoHResponse.fromMap(response.statusCode, null);
@@ -45,6 +56,7 @@ class DoH {
   }
 }
 
+/// Providers 
 class DoHProvider {
   static final Uri google = Uri.parse('https://dns.google.com/resolve');
   static final Uri cloudflare =

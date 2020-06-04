@@ -1,4 +1,6 @@
+
 class DoHResponse {
+  // interface attributes
   final int httpStatus;
   final int status;
   final bool tc;
@@ -13,9 +15,12 @@ class DoHResponse {
   DoHResponse(this.httpStatus, this.status, this.tc, this.rd, this.ra, this.ad,
       this.cd, this.question, this.answer);
 
+  //Constructor from http status & http data
   factory DoHResponse.fromMap(int httpStatus, Map<String, dynamic> map) {
     if (map != null) {
+      // Init DoH querstions
       var _question = <DoHQuestion>[];
+      // Init DoH aswers
       var _answer = <DoHAnswer>[];
       if (map.containsKey('Question')) {
         (map['Question'].cast<Map<String, dynamic>>()
@@ -48,23 +53,25 @@ class DoHResponse {
 }
 
 class DoHQuestion {
+  // interface attributes
   final String name;
   final int type;
 
   DoHQuestion(this.name, this.type);
-
+//Constructor from map
   factory DoHQuestion.fromMap(Map<String, dynamic> map) =>
       DoHQuestion(map['name'], map['type']);
 }
 
 class DoHAnswer {
+  // interface attributes
   final String name;
   final int type;
   final int ttl;
   final String data;
 
   DoHAnswer(this.name, this.type, this.ttl, this.data);
-
+  //Constructor from map
   factory DoHAnswer.fromMap(Map<String, dynamic> map) =>
       DoHAnswer(map['name'], map['type'], map['TTL'], map['data']);
 }
