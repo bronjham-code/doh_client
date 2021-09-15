@@ -10,8 +10,8 @@ class DoH {
 
   DoH(this.provider);
 
-  Future<DoHResponse> lookup(String domain, RecordType type,
-      {bool dnssec, Duration timeout}) async {
+  Future<DoHResponse?> lookup(String domain, RecordType type,
+      {bool? dnssec, Duration? timeout}) async {
     try {
       // Init HttpClient
       var client = HttpClient();
@@ -27,28 +27,25 @@ class DoH {
       request.headers.add('Accept', 'application/dns-json');
       // Close & retrive response
       var response = await request.close();
-
-      if (response != null && response.statusCode != null) {
-        // Convert response to <String>
-        var json =
-            await response.cast<List<int>>().transform(Utf8Decoder()).join();
-        if (json != null && json.isNotEmpty) {
-          // Init <Map> for jsonDecode
-          Map<String, dynamic> data;
-          try {
-            // Decode response <String> to <Map>
-            data = jsonDecode(json);
-          } catch (e) {
-            data = null;
-          }
-          if (data != null && data.isNotEmpty) {
-            // Return from status&data
-            return DoHResponse.fromMap(response.statusCode, data);
-          }
-          return DoHResponse.fromMap(response.statusCode, null);
+      //Dart analyzer says response cannot be null, so I removed the if(){}
+      // Convert response to <String>
+      var json =
+          await response.cast<List<int>>().transform(Utf8Decoder()).join();
+      if (json.isNotEmpty) {
+        // Init <Map> for jsonDecode
+        Map<String, dynamic>? data;
+        try {
+          // Decode response <String> to <Map>
+          data = jsonDecode(json);
+        } catch (e) {
+          data = null;
         }
-        return DoHResponse.fromMap(response.statusCode, null);
+        if (data != null && data.isNotEmpty) {
+          // Return from status&data
+          return DoHResponse.fromMap(response.statusCode, data);
+        }
       }
+      return DoHResponse.fromMap(response.statusCode, null);
     } catch (e) {
       print(e);
     }
@@ -56,7 +53,7 @@ class DoH {
   }
 }
 
-/// Providers 
+/// Providers
 class DoHProvider {
   static final Uri google = Uri.parse('https://dns.google.com/resolve');
   static final Uri cloudflare =

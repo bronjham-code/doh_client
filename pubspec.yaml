@@ -1,11 +1,11 @@
 name: doh_client
 description: This implementation allows you to send requests to DNS-over-HTTPS services.
-version: 0.1.2
+version: 0.2.0 # recommended verion bump in migration guide
 author: Skotnikov Sergei <skotnikov@europe.com>
 homepage: https://github.com/bronjham-code/doh_client
 
 environment:
-  sdk: '>=2.8.1 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0' #null safety on after 2.12.0
 
 #dependencies:
 
