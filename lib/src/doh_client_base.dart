@@ -11,7 +11,8 @@ class DoH {
   DoH(this.provider);
 
   Future<DoHResponse?> lookup(String domain, RecordType type,
-      {bool? dnssec, Duration? timeout}) async {
+      {bool? dnssec, Duration? timeout, bool? verbose}) async {
+    if (verbose == null) verbose = true; //print full GET error by default
     try {
       // Init HttpClient
       var client = HttpClient();
@@ -47,7 +48,7 @@ class DoH {
       }
       return DoHResponse.fromMap(response.statusCode, null);
     } catch (e) {
-      print(e);
+      verbose ? print(e) : print("GET Error");
     }
     return null;
   }
