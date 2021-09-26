@@ -6,7 +6,7 @@ main() async {
       .lookup('google.com', RecordType.A, dnssec: true);
   // Handle if response not null
   if (dohResponse != null) {
-    dohResponse.answer.forEach((answer) {
+    dohResponse.answer!.forEach((answer) {
       print(answer.data);
     });
   }

@@ -1,22 +1,21 @@
-
 class DoHResponse {
   // interface attributes
   final int httpStatus;
-  final int status;
-  final bool tc;
-  final bool rd;
-  final bool ra;
-  final bool ad;
-  final bool cd;
+  final int? status;
+  final bool? tc;
+  final bool? rd;
+  final bool? ra;
+  final bool? ad;
+  final bool? cd;
 
-  final List<DoHQuestion> question;
-  final List<DoHAnswer> answer;
+  final List<DoHQuestion>? question;
+  final List<DoHAnswer>? answer;
 
   DoHResponse(this.httpStatus, this.status, this.tc, this.rd, this.ra, this.ad,
       this.cd, this.question, this.answer);
 
   //Constructor from http status & http data
-  factory DoHResponse.fromMap(int httpStatus, Map<String, dynamic> map) {
+  factory DoHResponse.fromMap(int httpStatus, Map<String, dynamic>? map) {
     if (map != null) {
       // Init DoH querstions
       var _question = <DoHQuestion>[];
@@ -45,10 +44,8 @@ class DoHResponse {
           _question.isNotEmpty ? _question : null,
           _answer.isNotEmpty ? _answer : null);
     }
-    return httpStatus != null && httpStatus > 0
-        ? DoHResponse(
-            httpStatus, null, null, null, null, null, null, null, null)
-        : null;
+    return DoHResponse(
+        httpStatus, null, null, null, null, null, null, null, null);
   }
 }
 
